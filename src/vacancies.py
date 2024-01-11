@@ -86,3 +86,20 @@ class Vacancy:
                 return "Не указана"
         else:
             return "Не указана"
+
+    def get_employer(self) -> str:
+        """Возвращает название работодателя."""
+        if 'employer' in self.extra_data:
+            # Используем employer для HH
+            return self.extra_data['employer'].get('name', 'Не указан')
+        elif 'firm_name' in self.extra_data:
+            # Используем firm_name для SuperJob
+            return self.extra_data.get('firm_name', 'Не указан')
+        else:
+            return 'Не указан'
+
+    def __lt__(self, other) -> bool:
+        """
+        Сравнивает вакансии по заработной плате.
+        """
+        return self.extract_salary() < other.extract_salary()
