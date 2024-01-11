@@ -43,3 +43,20 @@ class AbstractVacancySaver(ABC):
     def print_vacancies(self, vacancies: List[Union[Dict[str, str], Vacancy]]) -> None:
         """Выводит информацию о вакансиях."""
         pass
+
+class JSONSaver(AbstractVacancySaver):
+    """
+    Класс JSONSaver реализует интерфейс AbstractVacancySaver для сохранения вакансий в JSON-файле.
+    """
+    def __init__(self, file_path="vacancies.json"):
+        self.file_path = file_path
+        self.vacancies = []
+
+    def load_from_file(self):
+        """Загружает данные из файла в список вакансий."""
+        if os.path.exists(self.file_path) and os.path.getsize(self.file_path) > 0:
+            with open(self.file_path, 'r', encoding='utf-8') as file:
+                self.vacancies = json.load(file)
+        else:
+            print("Файл с данными пуст или отсутствует.")
+            self.vacancies = []
