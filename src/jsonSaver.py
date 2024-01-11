@@ -47,6 +47,15 @@ class AbstractVacancySaver(ABC):
 class JSONSaver(AbstractVacancySaver):
     """
     Класс JSONSaver реализует интерфейс AbstractVacancySaver для сохранения вакансий в JSON-файле.
+
+    Методы:
+    - add_vacancy(vacancy): Добавляет вакансию в хранилище.
+    - get_vacancies_by_salary(min_salary): Возвращает вакансии с зарплатой не ниже указанной.
+    - delete_vacancy(vacancy): Удаляет вакансию из хранилища.
+    - filter_vacancies(*vacancies, filter_words): Фильтрует вакансии по ключевым словам.
+    - sort_vacancies(vacancies): Сортирует вакансии по алфавиту названия.
+    - get_top_vacancies(vacancies, top_n): Возвращает топ N вакансий.
+    - print_vacancies(vacancies): Выводит информацию о вакансиях.
     """
     def __init__(self, file_path="vacancies.json"):
         self.file_path = file_path
