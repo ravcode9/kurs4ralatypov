@@ -65,3 +65,24 @@ class Vacancy:
         except Exception as e:
             print(f"Ошибка при обработке HTML: {e}")
             return "данные отсутствуют, проверьте информацию о требованиях в вакансии по ссылке"
+
+    def get_city(self) -> str:
+        """Возвращает город вакансии."""
+        area_data = self.extra_data.get('area', {}) if 'area' in self.extra_data else {}
+        town_data = self.extra_data.get('town', {}) if 'town' in self.extra_data else {}
+        return area_data.get('name', town_data.get('title', 'Не указан'))
+
+    def get_currency(self) -> str:
+        """
+        Возвращает валюту вакансии.
+        """
+        if self.extra_data:
+            salary_data = self.extra_data.get("salary")
+            if salary_data and "currency" in salary_data:
+                return salary_data["currency"]
+            elif "currency" in self.extra_data:
+                return self.extra_data["currency"]
+            else:
+                return "Не указана"
+        else:
+            return "Не указана"
