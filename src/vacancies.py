@@ -1,3 +1,7 @@
+from bs4 import BeautifulSoup
+from io import StringIO
+
+
 class Vacancy:
     """
     Класс Vacancy представляет вакансию и содержит методы для обработки данных о вакансии.
@@ -43,3 +47,21 @@ class Vacancy:
                 return f"от {salary_from_sj}"
             else:
                 return "зарплата не указана"
+
+    def get_requirements(self) -> str:
+        """Возвращает требования к кандидату в формате строки."""
+        try:
+            snippet_requirements = self.extra_data.get('snippet', {}).get('requirement', '')
+            work_requirements = self.extra_data.get('work', '')
+            requirements = snippet_requirements or work_requirements
+
+            if requirements:
+                # Используем StringIO для создания объекта файлового потока
+                with StringIO(requirements) as file_stream:
+                    soup = BeautifulSoup(file_stream, 'html.parser')
+                    return soup.get_text()
+            else:
+                return "данные отсутствуют, проверьте информацию о требованиях в вакансии по ссылке"
+        except Exception as e:
+            print(f"Ошибка при обработке HTML: {e}")
+            return "данные отсутствуют, проверьте информацию о требованиях в вакансии по ссылке"
