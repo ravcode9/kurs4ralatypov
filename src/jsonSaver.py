@@ -115,3 +115,29 @@ class JSONSaver(AbstractVacancySaver):
     def sort_vacancies(self, vacancies: List[Union[Dict[str, str], Vacancy]]) -> List[Union[Dict[str, str], Vacancy]]:
         """Сортирует вакансии по заработной плате."""
         return sorted(vacancies, key=lambda v: Vacancy(**v).extract_salary() if isinstance(v, dict) else v.extract_salary(), reverse=True)
+
+    def get_top_vacancies(self, vacancies: List[Union[Dict[str, str], Vacancy]], top_n: int) -> List[Union[Dict[str, str], Vacancy]]:
+        """Возвращает топ N вакансий."""
+        return vacancies[:top_n]
+
+    def print_vacancies(self, vacancies):
+        for vacancy in vacancies:
+            if isinstance(vacancy, Vacancy):
+                print(f"Название: {vacancy.title}")
+                print(f"Ссылка: {vacancy.link}")
+                print(f"Зарплата: {vacancy.extract_salary()}")
+                print(f"Требования: {vacancy.get_requirements()}")
+                print(f"Город: {vacancy.get_city()}")
+                print(f"Валюта: {vacancy.get_currency()}")
+                print(f"Работодатель: {vacancy.get_employer()}")
+                print("=" * 50)  # Добавим строку-разделитель
+            elif isinstance(vacancy, dict):
+                print(f"Название: {vacancy.get('title', 'Не указано')}")
+                print(f"Ссылка: {vacancy.get('link', 'Не указана')}")
+                print(f"Зарплата: {vacancy.get('salary', 'Не указана')}")
+                print(
+                    f"Требования: {vacancy.get('requirements', 'данные отсутствуют, проверьте информацию о требованиях в вакансии по ссылке')}")
+                print(f"Город: {vacancy.get('city', 'Не указан')}")
+                print(f"Валюта: {vacancy.get('currency', 'Не указана')}")
+                print(f"Работодатель: {vacancy.get('employer', 'Не указан')}")
+                print("=" * 50)  # Добавим строку-разделитель
