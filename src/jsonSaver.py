@@ -80,6 +80,9 @@ class JSONSaver(AbstractVacancySaver):
                 "link": vacancy.link,
                 "salary": vacancy.extract_salary(),
                 "requirements": vacancy.get_requirements(),
+                "city": vacancy.get_city(),
+                "currency": vacancy.get_currency(),
+                "employer": vacancy.get_employer(),
             })
             self.vacancies.sort(key=lambda x: x['title'])  # Сортировка по алфавиту названия
             self.save_to_file()
